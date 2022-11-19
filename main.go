@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"strings"
+	"time"
 )
 
 func getRectangleArea(width int, length int) string {
@@ -88,7 +89,7 @@ func structExercise() {
 	fmt.Println(c2)
 }
 
-//L3.Interfaces
+// L3.Interfaces
 type Rectangle struct {
 	length, width float64
 }
@@ -119,6 +120,27 @@ func interfaceMain() {
 
 	fmt.Println("Rectangle perimeter: ", rectangle.perimeter())
 	fmt.Println("Square perimeter: ", square.perimeter())
+}
+
+// L3.Goroutines
+func routinePrinter(a []string) {
+	for _, elem := range a {
+		fmt.Println(elem)
+	}
+}
+
+func goroutineMain() {
+	startTime := time.Now()
+	colorNames := []string{"red", "orange", "yellow", "green", "blue", "indigo", "violet"}
+	colorCodes := []string{"#FF0000", "#FF7F00", "#FFFF00", "#00FF00", "#0000FF", "#4B0082", "#9400D3"}
+	go routinePrinter(colorNames)
+	go routinePrinter(colorCodes)
+
+	duration := time.Since(startTime)
+
+	fmt.Println("Duration of execution: " + duration.String())
+
+	time.Sleep(time.Second)
 }
 
 func main() {

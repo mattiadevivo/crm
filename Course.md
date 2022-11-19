@@ -376,4 +376,42 @@ func main() {
 
 ## Goroutines
 
-- 
+A goroutine is a function that executes simultaneously and independently of other Goroutines in the program code. This allows for concurrency in Go. In fact, just about any concurrently-executing activity processes in Go can be referred to as a Goroutine.
+
+To create a new Goroutine you just need to add the keyword `go` in front of a function:
+```go
+func myFunction(){
+
+}
+go myFunction()
+```
+
+Demo: 
+```go
+package main
+
+import (
+    "fmt"
+    "time"
+)
+
+func showMessage(message string) {
+    for i := 0; i < 5; i++ {
+        // "Pause" for one second, then...
+        time.Sleep(1 * time.Second)
+        // ... print the message to the console
+        fmt.Println(message)
+    }
+}
+
+func main() {
+    // Since this is a Goroutine, this will run concurrently (i.e., simultaneous and indpenedent of other program code)
+    // As such, this Goroutine will not wait until it is finished executing
+    // As a result, the `showMessage` call below will begin running at about the same time as the previous call!
+    go showMessage("Go is a great programming language.")
+
+    // This function call does not require the above function call to finish before running itself
+    showMessage("Welcome, Gophers!")
+}
+
+```
