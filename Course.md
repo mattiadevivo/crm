@@ -413,5 +413,73 @@ func main() {
     // This function call does not require the above function call to finish before running itself
     showMessage("Welcome, Gophers!")
 }
+```
 
+## HTTP server using net/http standard library
+
+[net/http package reference](https://pkg.go.dev/net/http)
+
+http handler signature example:
+```go
+type Handler interface {
+    ServeHTTP(ResponseWriter, *Request)
+}
+```
+
+Example of http handler function:
+```go
+func about(w http.ResponseWriter, r *http.Request) {
+    fmt.Fprintf(w, "Hello from /about!")
+}
+````
+
+**HandleFunc**
+Go `HandleFunc` function registers the handler function for a provided string pattern (i.e., route or path). This way, each and every route on your server has a designated handler to execute any custom code whenever the route is accessed.
+
+Signature:
+```go
+func HandleFunc(
+    pattern string,
+    handler func(ResponseWriter, *Request),
+)
+```
+
+Example using `HandleFunc` for registering a function `contact` as handler:
+```go
+http.HandleFunc("/contact", contact)
+```
+
+Demo:
+```go
+package main
+
+import (
+    "fmt"
+    "net/http"
+)
+
+// The "index" handler function. Note the two parameters:
+// 1. The ResponseWriter interface is used by the "index" handler to construct an HTTP response
+// 2. The Request is an HTTP request received by the server
+func index(w http.ResponseWriter, r *http.Request) {
+    // "Fprintf" formats and writes to w
+    fmt.Fprintf(w, "Hello world :]")
+}
+
+// The "contact" handler function
+func contact(w http.ResponseWriter, r *http.Request) {
+    // This handler writes HTML to w
+    fmt.Fprintf(w, "<h1>Contact Info</h1>")
+}
+
+func main() {
+    // Registering the "index" handler function to the "/" route (e.g., "https://example.com/",  "http://localhost:3000/", etc.)
+    http.HandleFunc("/", index)
+    // Registering the "contact" handler function to the "/contact" route (e.g., "https://example.com/contact",  "http://localhost:3000/contact", etc.)
+    http.HandleFunc("/contact", contact)
+
+    fmt.Println("Server is starting...")
+    // Instructing this HTTP server to listen for incoming requests on port 3000
+    http.ListenAndServe(":3000", nil)
+}
 ```

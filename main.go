@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"strings"
 	"time"
 )
@@ -143,7 +144,28 @@ func goroutineMain() {
 	time.Sleep(time.Second)
 }
 
+// L4.Handlers I
+var cities = []string{"Tokyo", "Delhi", "Shanghai", "Sao Paulo", "Mexico City"}
+
+func index(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "Hello world :]")
+}
+
+func cityList(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintln(w, cities)
+}
+
+func handlers1Main() {
+	http.HandleFunc("/", index)
+	http.HandleFunc("/citylist", cityList)
+
+	fmt.Println("Server is starting...")
+	// Instructing this HTTP server to listen for incoming requests on port 3000
+	http.ListenAndServe(":3000", nil)
+}
+
 func main() {
 	fmt.Println("Hello world")
 	fmt.Println(fizzbuzz(15))
+	handlers1Main()
 }
