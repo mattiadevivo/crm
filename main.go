@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 )
 
 func getRectangleArea(width int, length int) string {
@@ -38,6 +39,86 @@ func fizzbuzz(n int) []string {
 		}
 	}
 	return buzzs
+}
+
+func mapExercise() {
+	courses := map[int]string{1: "Calculus", 2: "Biology", 3: "Chemistry", 4: "Computer Science", 5: "Communications", 6: "English", 7: "Cantonese"}
+	for id, course := range courses {
+		if strings.HasPrefix(course, "C") {
+			fmt.Println(id, course)
+		}
+	}
+
+	courses[4] = "Algorithms"
+	courses[8] = "Spanish"
+	delete(courses, 1)
+}
+
+// L3.Structs
+type Student struct {
+	id   int
+	name string
+}
+
+type Classroom struct {
+	id          int
+	capacity    int
+	subject     string
+	studentList []Student
+}
+
+func structExercise() {
+	c1 := Classroom{id: 1, capacity: 28, subject: "Algorithm", studentList: []Student{{id: 1, name: "First Student"}, {id: 2, name: "Second Student"}}}
+	c2 := new(Classroom)
+	c2.id = 2
+	c2.capacity = 100
+	c2.subject = "Theater"
+	c2.studentList = []Student{
+		{
+			id:   40,
+			name: "Vince",
+		},
+		{
+			id:   50,
+			name: "Johnny",
+		},
+	}
+
+	fmt.Println(c1)
+	fmt.Println(c2)
+}
+
+//L3.Interfaces
+type Rectangle struct {
+	length, width float64
+}
+
+type Square struct {
+	side float64
+}
+
+type Shape interface {
+	perimeter() float64
+}
+
+func (r Rectangle) perimeter() float64 {
+	return (2 * r.length) + (2 * r.width)
+}
+
+func (s Square) perimeter() float64 {
+	return s.side * 4
+}
+
+func getPerimeter(s Shape) float64 {
+	return s.perimeter()
+}
+
+func interfaceMain() {
+	rectangle := Rectangle{length: 2, width: 4}
+	square := Square{side: 2}
+
+	fmt.Println("Rectangle perimeter: ", rectangle.perimeter())
+	fmt.Println("Square perimeter: ", square.perimeter())
 }
 
 func main() {

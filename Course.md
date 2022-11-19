@@ -232,3 +232,148 @@ Step by step:
 - We use the range keyword to signify that we're indeed using a range.
 - We provide the name of the data structure onto which we are looking to iterate through. In this case, it would be the variable name pointing to the - array or slice
 - And finally, within the curly braces, we include our custom code that we want to run!
+
+## Maps
+
+Items in map are not ordered and are accessible by a key.
+
+Maps are data structures with key-value pairs. That is, for every key, there is an associated value. Additionally:
+- Maps are unordered. That is, there is no "index" or position that each value is associated with. Values are - associated to their assigned key
+- Keys are unique. Since values are accessed by referring to their key, a map must have unique keys. Note the - difference with an array or slice -- where an array (or a slice) can have elements that are the same! (e.g., var `mySlice = []in{1, 2, 2, 3})`
+- Lookup is fast! In an array, it's possible that we may have to iterate through every single element to find - something. With a map, as long as we know the key, we have near-instant access to its associated value
+
+Signature of a map:
+```go
+map[key_type]value_type{key1: value1, key2: value2, ...}
+```
+
+Map demo:
+```go
+courses := map[uint16]string{
+
+        1: "Calculus",
+        2: "Biology",
+        3: "Chemistry",
+        4: "Computer Science",
+        5: "Communications",
+        7: "English",
+        8: "Cantonese",
+    }
+
+    // Using a range, we can through the "courses" map (just like we can for arrays and slices)
+    // Rather than an index and element, we are declaring variables for a key (id) and a value (course) 
+    for id, course := range courses {
+        // If the course, which is a string, begins with the letter "C," it will be printed to the console
+        if strings.HasPrefix(course, "C") {
+            fmt.Println(id, course)
+        }
+    }
+
+	// Removing an item from the "courses" map via the built-in "delete" function
+	delete(courses, 1)
+```
+
+## Structs
+
+Struct are similar to classes, they provide a way to reuse things using a common template and instanciate it with different values.
+
+Structs have the following signature:
+```go
+type <name> struct {
+  // field1 type
+  // field2 type
+  // field3 type
+  // ...
+}
+```
+
+We cannot define **methods** like in classes but instead we can attach function of 2 different types:
+- **value receiver** can only access value in read   
+- **pointer receiver** has access to the pointer so they can also modify values
+
+```go
+import "srtconv"
+type Car struct {
+	make string
+	year string
+	used bool
+}
+
+// This only can do read access
+func (c Car) describe() string {
+	used := ""
+	if c.used {
+		used = "a used car"
+	} else {
+		used = "a new car" 
+	}
+	return "This " + strconv.Itoa(int(c.year)) + " " + c.make + "is " + 
+}
+```
+
+## Interface
+
+In Go, an interface is custom type that we can use to list out one or more methods, along with their method signatures. But unlike what we’ve seen with a struct, it’s a bit more abstract. That is, we don’t quite create an instance of an interface. While it’s a custom type, it’s really still just a collection of methods that we can refer to.
+
+Interface signature
+```go
+type <name> interface {
+	method1 return_type
+	method2 return_type
+	method3 return_type
+}
+```
+
+Example:
+```go
+package main
+
+import "fmt"
+
+// A "Baseball" struct with two fields
+type Baseball struct {
+    mass         int
+    acceleration int
+}
+
+// A "Football" struct with no fields
+type Football struct {
+}
+
+// A "getForce" method that accepts a "Baseball" type
+func (b Baseball) getForce() int {
+    return b.mass * b.acceleration
+}
+
+// A "getForce" method that accepts a "Football" type
+func (f Football) getForce() int {
+    return 50
+}
+
+// A "Force" interface
+// Any type -- such as the Baseball or Football -- that satisfies this interface is said to implement it
+// Because both the Baseball and Football structs indeed satisfy the interface via their "getForce" methods...
+// ... both the Baseball type and Football type implement the "Force" interface
+type Force interface {
+    getForce() int
+}
+
+// As such, rather than having separate "compareForce" functions, both the Baseball and Football's forces...
+// ... can now be compared by used this common compareForce function, since both types implement the Force interface
+func compareForce(a, b Force) bool {
+    return a.getForce() > b.getForce()
+}
+
+func main() {
+    // Create an instance of each type
+    b := Baseball{2, 20}
+    f := Football{}
+
+    // Print the return value of invoking "compareForce" after passing in each instance
+    fmt.Println(compareForce(b, f))
+}
+```
+
+## Goroutines
+
+- 
