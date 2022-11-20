@@ -1,3 +1,7 @@
 # CRM
 
-This project contains code written during **Udacity Golang course**.
+Crm backend service written in Golang.
+
+## Requirements
+
+[Application Requirements](https://review.udacity.com/#!/rubrics/4856/view)
