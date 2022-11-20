@@ -483,3 +483,94 @@ func main() {
     http.ListenAndServe(":3000", nil)
 }
 ```
+
+**Returning JSON response** demo:
+```go
+package main
+
+// The encoding/json package helps with the encoding and decoding of JSON
+// i.e., the package allows us to convert Go values to and from JSON
+import (
+    "encoding/json"
+    "fmt"
+    "net/http"
+)
+
+// A map with string keys pointing to string values
+var dictionary = map[string]string{
+    "Go":     "A programming language created by Google.",
+    "Gopher": "A software engineer who builds with Go.",
+    "Golang": "Another name for Go.",
+}
+
+// This handler function simply returns a JSON version of the "dictionary" map
+func getDictionary(w http.ResponseWriter, r *http.Request) {
+    // Sets up the Content-Type header so that the client knows to expect a JSON response
+    w.Header().Set("Content-Type", "application/json")
+
+    // We cannot simply response with the "dictionary" map as-is, since the "dictionary" is a Go value
+    // Instead, webuilds a new encoder using the ResponseWriter, then encodes the map into JSON
+    json.NewEncoder(w).Encode(dictionary)
+}
+
+func main() {
+    // Make a GET request to "/" calls the "getDictionary" handler, which returns the entire JSON-encoded map
+    http.HandleFunc("/", getDictionary)
+
+    fmt.Println("Server is starting on port 3000...")
+    http.ListenAndServe(":3000", nil)
+}
+```
+
+**Serve static resources**:
+```go
+package main  
+
+import (  
+    "fmt"  
+    "net/http"  
+)  
+
+func showContactPage(w http.ResponseWriter, r *http.Request) {  
+    http.ServeFile(w, r, "path/to/file/contact.html")  
+}  
+
+func main() {  
+    http.HandleFunc("/", showContactPage)  
+
+    fmt.Println("Server is starting...")  
+    http.ListenAndServe(":3000", nil)  
+}  
+```
+
+### HTTP Router
+
+In Go for processing HTTP requests we have:
+- handlers
+- servermuxes (i.e. multiplexer, mux, or router)
+- maps are predefined URL paths and associated handlers
+- usually we just have one servermux for application
+
+`net/http` comes with `http.ServerMux` but
+- it doesn't support method-based routing
+  - GET /posts
+  - POST /posts
+  - PUT /posts/{post_id}
+  - DELETE /posts/{post_id}
+- does not support urls with parameters
+
+`gorilla/mux` package , its `mux.Router` is like the standard `http.ServerMux` and matches incoing requests against a list of registered routes and calls a handler for the route that matches ther URL or other conditions. It:
+- implements http.Handler
+- Requests matched based on URL host, path, query values, HTTP methods, etc...
+
+```go
+r := mux.NewRouter()
+r.HandleFunc("/blogs", handler).Methods("POST")
+r.HandleFunc("/users", handler).Methods("GET")
+r.HandleFunc("/users/{id}", handler).Methods("GET", "PUT")
+```
+
+curl post example:
+```bash
+curl -d '{"key1":"value1", "key2": "value2"}' -H "Content-Type: application/json" -X POST http://localhost:3000/dictionary
+```

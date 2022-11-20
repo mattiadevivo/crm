@@ -1,10 +1,14 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"strings"
 	"time"
+
+	"github.com/gorilla/mux"
 )
 
 func getRectangleArea(width int, length int) string {
@@ -164,8 +168,131 @@ func handlers1Main() {
 	http.ListenAndServe(":3000", nil)
 }
 
+// L4.Handlers II
+var cityPopulations = map[string]uint32{
+	"Tokyo":       37435191,
+	"Delhi":       29399141,
+	"Shanghai":    26317104,
+	"Sao Paulo":   21846507,
+	"Mexico City": 21671908,
+}
+
+func index2(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "text/html; charset=utf-8")
+	w.WriteHeader(http.StatusOK)
+
+	for k, v := range cityPopulations {
+		fmt.Fprintf(w, "<h2>%s, %d</h2>", k, v)
+	}
+}
+
+func handlers2Main() {
+	http.HandleFunc("/index", index2)
+
+	fmt.Println("Server is starting on port 3000")
+	http.ListenAndServe(":3000", nil)
+}
+
+// L4.Handlers III
+func index3(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+
+	json.NewEncoder(w).Encode(cityPopulations)
+}
+
+func handlers3Main() {
+	http.HandleFunc("/index", index3)
+
+	fmt.Println("Server is starting on port 3000")
+	http.ListenAndServe(":3000", nil)
+}
+
+// L4.Handlers III with Gorilla
+var dictionary = map[string]string{
+	"Go":     "A programming language created by Google.",
+	"Gopher": "A software engineer who builds with Go.",
+	"Golang": "Another name for Go.",
+}
+
+func getDictionary(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+
+	json.NewEncoder(w).Encode(dictionary)
+}
+
+func createDictionary(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	var newEntry map[string]string
+
+	// Read request
+	reqBody, _ := ioutil.ReadAll(r.Body)
+	// Parse JSON body
+	json.Unmarshal(reqBody, &newEntry)
+	// Add new entry to dictionary
+	for k, v := range newEntry {
+		if _, isPresent := dictionary[k]; isPresent {
+			w.WriteHeader(http.StatusConflict)
+		} else {
+			dictionary[k] = v
+			w.WriteHeader(http.StatusCreated)
+		}
+	}
+
+	json.NewEncoder(w).Encode(dictionary)
+}
+
+func handlers3MuxMain() {
+	router := mux.NewRouter()
+
+	router.HandleFunc("/dictionary", getDictionary).Methods("GET")
+	router.HandleFunc("/dictionary", createDictionary).Methods("POST")
+	fmt.Println("Server is starting on port 3000")
+	http.ListenAndServe(":3000", router)
+}
+
+// L4.Routing
+var members = map[string]string{
+	"1": "Andy",
+	"2": "Peter",
+	"3": "Gabriella",
+	"4": "Jordy",
+}
+
+func getMembers(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+
+	json.NewEncoder(w).Encode(members)
+}
+
+func deleteMember(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+	id := mux.Vars(r)["id"]
+
+	if _, ok := members[id]; ok {
+		delete(members, id)
+		w.WriteHeader(http.StatusOK)
+		json.NewEncoder(w).Encode(members)
+	} else {
+		w.WriteHeader(http.StatusNotFound)
+		json.NewEncoder(w).Encode(members)
+	}
+}
+
+func routingMain() {
+	router := mux.NewRouter()
+
+	router.HandleFunc("/members", getMembers).Methods("GET")
+	router.HandleFunc("/members/{id}", deleteMember).Methods("DELETE")
+	fmt.Println("Server is starting on port 3000")
+	http.ListenAndServe(":3000", router)
+}
+
 func main() {
 	fmt.Println("Hello world")
 	fmt.Println(fizzbuzz(15))
-	handlers1Main()
+	routingMain()
 }
