@@ -13,8 +13,15 @@ Set environment variables (or put them iniline before `go run` command):
 export LOG_LEVEL=debug
 ```
 
+Create updated version of Swagger:
+```
+go install github.com/swaggo/swag/cmd/swag@latest
+swag init -g main.go --output docs/crm
+```
+
+Run the server:
 ```bash
-go run cmd/crm/main.go
+go run main.go
 ```
 
 ## Environment Variables
@@ -35,6 +42,15 @@ List of variables:
 LOG_LEVEL=debug|error
 PORT=3000
 ```
+
+## Project details
+
+Backend service of a CRM web application. The server will support all of the functionalities:
+- Getting a list of all customers
+- Getting data for a single customer
+- Adding a customer
+- Updating a customer's information
+- Removing a customer
 
 ## Requirements
 

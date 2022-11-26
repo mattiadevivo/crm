@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/gofiber/fiber/v2"
+	"github.com/mattiadevivo/crm/database"
 	"github.com/mattiadevivo/crm/routes"
 	"github.com/mattiadevivo/crm/variables"
 	"github.com/rs/zerolog"
@@ -28,13 +29,31 @@ func setupLogging(level string) {
 	zerolog.SetGlobalLevel(logLevel)
 }
 
+// @title Fiber Swagger Example API
+// @version 2.0
+// @description This is a sample server server.
+// @termsOfService http://swagger.io/terms/
+
+// @contact.name API Support
+// @contact.url http://www.swagger.io/support
+// @contact.email support@swagger.io
+
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+
+// @host localhost:3000
+// @BasePath /
+// @schemes http
 func main() {
 	setupLogging(os.Getenv(variables.LogLevel))
-
+	// Server port
 	port, isSet := os.LookupEnv(variables.ServerPort)
 	if !isSet {
 		port = "3000"
 	}
+	// Mock db migration
+	database.Migrate()
+	// Setup api server
 	app := fiber.New()
 	routes.Setup(app)
 
