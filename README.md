@@ -41,6 +41,11 @@ List of variables:
 ```bash
 LOG_LEVEL=debug|error
 PORT=3000
+MYSQL_USER
+MYSQL_PASSWORD
+MYSQL_ADDRESS
+MYSQL_PORT
+MYSQL_DBNAME
 ```
 
 ## Project details

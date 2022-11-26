@@ -1,8 +1,6 @@
 package database
 
 import (
-	"fmt"
-
 	"github.com/mattiadevivo/crm/models"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
@@ -10,13 +8,15 @@ import (
 
 var DB *gorm.DB
 
-func Connect(dsn string) {
+func Connect(dsn string) error {
 	connection, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
-		panic(fmt.Sprint("Could not connect to the database", err))
+		return err
 	}
 
 	DB = connection
-
-	connection.AutoMigrate(&models.Customer{})
+	if err := connection.AutoMigrate(&models.Customer{}); err != nil {
+		return err
+	}
+	return nil
 }

@@ -52,11 +52,14 @@ func main() {
 		port = "3000"
 	}
 	// Mock db migration
-	database.Migrate()
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", os.Getenv("MYSQL_USER"), os.Getenv("MYSQL_PASSWORD"), os.Getenv("MYSQL_ADDRESS"), os.Getenv("MYSQL_PORT"), os.Getenv("MYSQL_DBNAME"))
+	fmt.Println(dsn)
+	if err := database.Connect(dsn); err != nil {
+		panic(fmt.Sprint("Could not connect to the database", err))
+	}
 	// Setup api server
 	app := fiber.New()
 	routes.Setup(app)
-
 	app.Listen(fmt.Sprintf(":%s", port))
 	log.Info().Msg(fmt.Sprintf("Server started at port %s", port))
 }
