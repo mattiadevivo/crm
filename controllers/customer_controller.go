@@ -10,6 +10,14 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
+// GetCustomers
+// @Summary Get all customers from db
+// @Description Retrieve the full list of customers
+// @Tags root
+// @Accept */*
+// @Produce json
+// @Success 200 {object} []models.Customer
+// @Router /customers [get]
 func GetCustomers(c *fiber.Ctx) error {
 	log.Debug().Msg("GET /customers")
 	var customers []models.Customer
@@ -23,6 +31,14 @@ func GetCustomers(c *fiber.Ctx) error {
 	return c.JSON(customers)
 }
 
+// GetCustomer by id
+// @Summary Get customer by id
+// @Description Retrieve the customer having the given id
+// @Tags root
+// @Accept */*
+// @Produce json
+// @Success 200 {object} models.Customer
+// @Router /customers/:id [get]
 func GetCustomer(c *fiber.Ctx) error {
 	log.Debug().Msgf("GET /customers/%s", c.Params("id"))
 	var customer models.Customer
@@ -36,6 +52,14 @@ func GetCustomer(c *fiber.Ctx) error {
 	return c.JSON(customer)
 }
 
+// Add Customer
+// @Summary Add customer
+// @Description Add the customer provided via JSON body inside db
+// @Tags root
+// @Accept application/json
+// @Produce json
+// @Success 200 {object} models.Customer
+// @Router /customers [post]
 func AddCustomer(c *fiber.Ctx) error {
 	var customer models.Customer
 	c.Accepts("application/json")
@@ -57,6 +81,14 @@ func AddCustomer(c *fiber.Ctx) error {
 	return c.JSON(customer)
 }
 
+// Update customer by id
+// @Summary Update customer by id
+// @Description Update customer having the given id with data provided via JSON body
+// @Tags root
+// @Accept application/json
+// @Produce json
+// @Success 200 {object} models.Customer
+// @Router /customers/:id [put]
 func UpdateCustomer(c *fiber.Ctx) error {
 	var customer models.Customer
 	var updatedCustomer models.Customer
@@ -88,6 +120,14 @@ func UpdateCustomer(c *fiber.Ctx) error {
 	return c.JSON(updatedCustomer)
 }
 
+// Delete by id
+// @Summary Delete customer by id
+// @Description Delete the customer having the given id
+// @Tags root
+// @Accept */*
+// @Produce json
+// @Success 200 {object} map[string]interface{}
+// @Router /customers/:id [delete]
 func DeleteCustomer(c *fiber.Ctx) error {
 	log.Debug().Msgf("DELETE /customers/%s", c.Params("id"))
 	var customer models.Customer

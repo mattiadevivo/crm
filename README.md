@@ -1,17 +1,27 @@
 # CRM
 
-Crm backend service written in Golang.
+Crm backend service written in Golang (used as Udacity Golang project work) that uses Mysql as database for customers data usage together with **gorm** as ORM.
+The web framework used in this project is **gofiber**, a really fast and simple one.
+As logging library `zerlog` has been used.
+
+**Project details**:
+Backend service of a CRM web application. The server will support all of the functionalities:
+- Getting a list of all customers
+- Getting data for a single customer
+- Adding a customer
+- Updating a customer's information
+- Removing a customer
+
+When running the project the first time database schema will be automatically created and some dummy data stored.
+
+At `http://localhost:<port>/` you'll find a static html file describing the project.
+At `http://localhost:<port>/swagger/index.html` you'll find Swagger documentation.
 
 ## Run
 
 Build Docker image: `docker build -t crm-backend . --build-arg GIT_TOKEN=<token> --build-arg GIT_USER=<git_user>`
 
 Run Docker container: `docker run --network="<network>" --env-file <env-file> crm-backend`
-
-Set environment variables (or put them iniline before `go run` command):
-```bash
-export LOG_LEVEL=debug
-```
 
 Create updated version of Swagger:
 ```
@@ -26,9 +36,13 @@ docker-compose up -d
 
 Run the server:
 ```bash
-source test.env
+# export env vars
+source test.env 
+# execute backend server
 go run main.go
 ```
+
+Check `/postman` folder and load inside Postman the `collection.json` file to have some ready-to-use requests to run against the server.
 
 ## Environment Variables
 
@@ -53,15 +67,6 @@ MYSQL_ADDRESS=localhost
 MYSQL_PORT=3306
 MYSQL_DBNAME=crm
 ```
-
-## Project details
-
-Backend service of a CRM web application. The server will support all of the functionalities:
-- Getting a list of all customers
-- Getting data for a single customer
-- Adding a customer
-- Updating a customer's information
-- Removing a customer
 
 ## Requirements
 

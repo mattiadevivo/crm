@@ -16,12 +16,11 @@ RUN go mod tidy
 ENV CGO_ENABLED=0
 ENV GOOS=linux
 ENV GOARCH=amd64
-WORKDIR /go/src/app/cmd/crm
 RUN go build -a -ldflags="-w -s" -o crm-backend
 
 # final stage
 FROM alpine:3.17
 WORKDIR /app
-COPY --from=build-img /go/src/app/cmd/crm/crm-backend .
+COPY --from=build-img /go/src/app/crm-backend .
 
 CMD ["/app/crm-backend"]

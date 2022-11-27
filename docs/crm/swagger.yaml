@@ -1,4 +1,20 @@
 basePath: /
+definitions:
+  models.Customer:
+    properties:
+      contacted:
+        type: boolean
+      email:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      phone:
+        type: string
+      role:
+        type: string
+    type: object
 host: localhost:3000
 info:
   contact:
@@ -13,11 +29,42 @@ info:
   title: Fiber Swagger Example API
   version: "2.0"
 paths:
-  /:
+  /customers:
     get:
       consumes:
       - '*/*'
-      description: get the status of server.
+      description: Retrieve the full list of customers
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Customer'
+            type: array
+      summary: Get all customers from db
+      tags:
+      - root
+    post:
+      consumes:
+      - application/json
+      description: Add the customer provided via JSON body inside db
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Customer'
+      summary: Add customer
+      tags:
+      - root
+  /customers/:id:
+    delete:
+      consumes:
+      - '*/*'
+      description: Delete the customer having the given id
       produces:
       - application/json
       responses:
@@ -26,7 +73,36 @@ paths:
           schema:
             additionalProperties: true
             type: object
-      summary: Show the status of server. Bananaa
+      summary: Delete customer by id
+      tags:
+      - root
+    get:
+      consumes:
+      - '*/*'
+      description: Retrieve the customer having the given id
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Customer'
+      summary: Get customer by id
+      tags:
+      - root
+    put:
+      consumes:
+      - application/json
+      description: Update customer having the given id with data provided via JSON
+        body
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.Customer'
+      summary: Update customer by id
       tags:
       - root
 schemes:

@@ -21,9 +21,9 @@
     "host": "localhost:3000",
     "basePath": "/",
     "paths": {
-        "/": {
+        "/customers": {
             "get": {
-                "description": "get the status of server.",
+                "description": "Retrieve the full list of customers",
                 "consumes": [
                     "*/*"
                 ],
@@ -33,7 +33,96 @@
                 "tags": [
                     "root"
                 ],
-                "summary": "Show the status of server. Bananaa",
+                "summary": "Get all customers from db",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/models.Customer"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Add the customer provided via JSON body inside db",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "root"
+                ],
+                "summary": "Add customer",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Customer"
+                        }
+                    }
+                }
+            }
+        },
+        "/customers/:id": {
+            "get": {
+                "description": "Retrieve the customer having the given id",
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "root"
+                ],
+                "summary": "Get customer by id",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Customer"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "description": "Update customer having the given id with data provided via JSON body",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "root"
+                ],
+                "summary": "Update customer by id",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/models.Customer"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "description": "Delete the customer having the given id",
+                "consumes": [
+                    "*/*"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "root"
+                ],
+                "summary": "Delete customer by id",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -42,6 +131,31 @@
                             "additionalProperties": true
                         }
                     }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "models.Customer": {
+            "type": "object",
+            "properties": {
+                "contacted": {
+                    "type": "boolean"
+                },
+                "email": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                },
+                "role": {
+                    "type": "string"
                 }
             }
         }
