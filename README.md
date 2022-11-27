@@ -21,7 +21,7 @@ At `http://localhost:<port>/swagger/index.html` you'll find Swagger documentatio
 
 Build Docker image: `docker build -t crm-backend . --build-arg GIT_TOKEN=<token> --build-arg GIT_USER=<git_user>`
 
-Run Docker container: `docker run --network="<network>" --env-file <env-file> crm-backend`
+Run Docker container: `docker run --network="<docker-compose-mysql-network>" --env-file <container.env/your-env-file> -p "127.0.0.1:<port-on-host>:<container-server-port>" crm-backend`
 
 Create updated version of Swagger:
 ```
@@ -45,6 +45,13 @@ go run main.go
 ```
 
 Check `/postman` folder and load inside Postman the `collection.json` file to have some ready-to-use requests to run against the server.
+
+## Mysql administration
+
+Run the command to login in mysql cli inside Mysql Docker container:
+```bash
+docker exec -ti mysql mysql -u crm-backend -p
+```
 
 ## Environment Variables
 
