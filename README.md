@@ -66,3 +66,8 @@ Backend service of a CRM web application. The server will support all of the fun
 ## Requirements
 
 [Application Requirements](https://review.udacity.com/#!/rubrics/4856/view)
+
+## References
+
+[gofiber](https://gofiber.io/)
+[gorm](https://gorm.io/)

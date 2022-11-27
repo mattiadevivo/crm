@@ -3,6 +3,7 @@ package routes
 import (
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/swagger" // swagger handler
+	"github.com/mattiadevivo/crm/controllers"
 	_ "github.com/mattiadevivo/crm/docs/crm"
 )
 
@@ -19,10 +20,13 @@ func dummyController(c *fiber.Ctx) error {
 }
 
 func Setup(app *fiber.App) {
-	app.Get("/*", swagger.HandlerDefault)
-	app.Get("/customers/:id", dummyController)    // get single customer
-	app.Get("/customers", dummyController)        // get all customers
-	app.Post("/customers", dummyController)       // insert customer
-	app.Put("/customers/:id", dummyController)    // modify customer
-	app.Delete("/customers/:id", dummyController) // modify customer
+	customersRouter := app.Group("/customers")
+	customersRouter.Get("/", controllers.GetCustomers)      // get all customers
+	customersRouter.Get("/:id", controllers.GetCustomer)    // get single customer
+	customersRouter.Post("/", controllers.AddCustomer)      // insert customer
+	customersRouter.Put("/:id", controllers.UpdateCustomer) // modify customer
+	customersRouter.Delete("/:id", dummyController)         // modify customer
+	// Others
+	app.Static("/", "./static")
+	app.Get("/swagger/*", swagger.HandlerDefault)
 }
