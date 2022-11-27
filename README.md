@@ -38,6 +38,8 @@ Run the server:
 ```bash
 # export env vars
 source test.env 
+# download dependencies
+go mod tidy
 # execute backend server
 go run main.go
 ```
@@ -57,7 +59,7 @@ Available log levels:
 
 The application supports `debug` or `error` values for `LOG_LEVEL` env var, any other values (or no value) will be recognized as `info` level.
 
-List of variables:
+List of variables (see them under `/variables/env.go`):
 ```bash
 LOG_LEVEL=debug|error
 PORT=3000

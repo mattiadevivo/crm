@@ -52,7 +52,7 @@ func main() {
 		port = "3000"
 	}
 	// Mock db migration
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", os.Getenv("MYSQL_USER"), os.Getenv("MYSQL_PASSWORD"), os.Getenv("MYSQL_ADDRESS"), os.Getenv("MYSQL_PORT"), os.Getenv("MYSQL_DBNAME"))
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", os.Getenv(variables.DbUser), os.Getenv(variables.DbPassword), os.Getenv(variables.DbAddress), os.Getenv(variables.DbPort), os.Getenv(variables.DbName))
 	if err := database.Connect(dsn); err != nil {
 		log.Error().Err(err)
 		panic(fmt.Sprint("Could not connect to the database", err))
