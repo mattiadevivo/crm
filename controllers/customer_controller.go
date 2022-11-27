@@ -88,6 +88,24 @@ func UpdateCustomer(c *fiber.Ctx) error {
 	return c.JSON(updatedCustomer)
 }
 
-func deleteCustomer() {
-
+func DeleteCustomer(c *fiber.Ctx) error {
+	log.Debug().Msgf("DELETE /customers/%s", c.Params("id"))
+	var customer models.Customer
+	result := database.DB.First(&customer, c.Params("id"))
+	if result.Error != nil {
+		log.Error().Err(result.Error)
+		return c.Status(404).JSON(&fiber.Map{
+			"error": fmt.Sprintf("No customer with id %s found!", c.Params("id")),
+		})
+	}
+	// Delete customer from DB
+	if result := database.DB.Delete(&customer); result.Error != nil {
+		log.Error().Err(result.Error)
+		c.Status(500).JSON(&fiber.Map{
+			"error": fmt.Sprintf("Error while deleting customer from db: %s", result.Error),
+		})
+	}
+	return c.JSON(&fiber.Map{
+		"message": fmt.Sprintf("Correctly deleted customer with id %s", c.Params("id")),
+	})
 }
