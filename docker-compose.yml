@@ -3,17 +3,13 @@ version: '3.3'
 # .env file contains the name of the network that will be created for the apps in this docker-compose file
 # update the name by using --project-name <proj_name> flag
 services:
-  mongodb:
-    container_name: mongodb
-    image: mongo:5
+  mysql:
+    container_name: mysql
+    image: mysql:8-debian
     ports: 
-      - "127.0.0.1:27017:27017"
-
-  vernemq:
-    container_name: vernemq
-    image: vernemq/vernemq
-    ports: 
-      - "127.0.0.1:1883:1883"
+      - "127.0.0.1:3306:3306"
     environment:
-      - "DOCKER_VERNEMQ_ALLOW_ANONYMOUS=on"
-      - "DOCKER_VERNEMQ_ACCEPT_EULA=yes"
+      MYSQL_ROOT_PASSWORD: root-password
+      MYSQL_DATABASE: crm
+      MYSQL_USER: crm-backend
+      MYSQL_PASSWORD: crm-backend

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<head>
+    <title></title>
+</head>
+<body>
+    <h2>CRM backend</h2>
+    <ul>
+        <li>
+            GET http://localhost:3000/customers - Get all customers
+        </li>
+        <li>
+            GET http://localhost:3000/customers/:id - Get customer with the specified id
+        </li>
+        <li>
+            POST http://localhost:3000/customers - Stored inside db the customer provided via body (json)
+        </li>
+        <li>
+            PUT http://localhost:3000/customers/:id - Update customer having the specified id in db with data provided via body (json)
+        </li>
+        <li>
+            DELETE http://localhost:3000/customers/:id - Delete customer with the specified id
+        </li>
+    </ul>
+    <a href="http://localhost:3000/swagger/index.html#/">Swagger doc</a>
+</body>
+</html>
