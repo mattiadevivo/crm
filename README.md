@@ -19,8 +19,14 @@ go install github.com/swaggo/swag/cmd/swag@latest
 swag init -g main.go --output docs/crm
 ```
 
+Create Mysql Docker container:
+```bash
+docker-compose up -d
+```
+
 Run the server:
 ```bash
+source test.env
 go run main.go
 ```
 
@@ -41,11 +47,11 @@ List of variables:
 ```bash
 LOG_LEVEL=debug|error
 PORT=3000
-MYSQL_USER
-MYSQL_PASSWORD
-MYSQL_ADDRESS
-MYSQL_PORT
-MYSQL_DBNAME
+MYSQL_USER=crm-backend
+MYSQL_PASSWORD=crm-backend
+MYSQL_ADDRESS=localhost
+MYSQL_PORT=3306
+MYSQL_DBNAME=crm
 ```
 
 ## Project details
